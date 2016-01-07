@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.util.*;
+import java.awt.event.*;
 
 public class Hangman
 {
@@ -35,7 +36,7 @@ public class Hangman
 		disKeyTitle = "Error: Game not started!";
 
 		// Generate character array (0:A, 1:B, etc.)
-		alphabet = {'A','B','C','D','E','F','G','H','I','J','K','L',
+		alphabet = new char[] {'A','B','C','D','E','F','G','H','I','J','K','L',
 			'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 
 		// Initialize all GUI elements
@@ -117,7 +118,8 @@ public class Hangman
 						public void actionPerformed(ActionEvent ev){
 							onLetterClicked(Character.parseChar(b.getText().strip()));
 						}
-				})});
+					});
+				});
 		} else {
 			alphaButtons.parallelStream()
 				.forEach(b -> {
@@ -126,7 +128,8 @@ public class Hangman
 						public void actionPerformed(ActionEvent ev){
 							
 						}
-					})});
+					});
+				});
 		}
 	}
 
