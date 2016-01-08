@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.util.*;
+import java.awt.event.*;
 
 public class Hangman
 {
@@ -16,6 +17,7 @@ public class Hangman
 	private char[] alphabet;
 	private JLabel welcomeLabel, wordLabel;
 	private WordGenerator wordGen;
+	private ActionListener startedListener, stoppedListener;
 
 	/**
 	 * Sole constructor. Sets all global variables within Hangman class.
@@ -35,7 +37,7 @@ public class Hangman
 		disKeyTitle = "Error: Game not started!";
 
 		// Generate character array (0:A, 1:B, etc.)
-		alphabet = {'A','B','C','D','E','F','G','H','I','J','K','L',
+		alphabet = new char[] {'A','B','C','D','E','F','G','H','I','J','K','L',
 			'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 
 		// Initialize all GUI elements
@@ -47,12 +49,25 @@ public class Hangman
 		quitItem = new JMenuItem(quitStr);
 		aboutItem = new JMenuItem(aboutStr);
 		
+		// Generate JButtons array using alphabet
 		alphaButtons = new ArrayList<JButton>();
 		for(char c: alphabet){
 			alphaButtons.add(new JButton(c));
 		}
 
 		welcomeLabel = new JLabel(welcomeStr);
+		startedListener = 
+			new ActionListener(){
+				public void actionPerformed(ActionEvent ev){
+					onLetterClicked(Character.parseChar(ev.getSource().getText().strip()));
+				}
+			}
+		stoppedListener = 
+			new ActionListener(){
+				public void actionPerformed(ActionEvent ev){
+					// 
+				}
+			}
 
 	}
 
@@ -113,20 +128,14 @@ public class Hangman
 			alphaButtons.parallelStream()
 				.forEach(b -> {
 					b.removeActionListener();
-					b.addActionListener( new ActionListener(){
-						public void actionPerformed(ActionEvent ev){
-							onLetterClicked(Character.parseChar(b.getText().strip()));
-						}
-				})});
+					b.addActionListener(startedListener);
+				});
 		} else {
 			alphaButtons.parallelStream()
 				.forEach(b -> {
 					b.removeActionListener();
-					b.addActionListener( new ActionListener(){
-						public void actionPerformed(ActionEvent ev){
-							
-						}
-					})});
+					b.addActionListener(stoppedListener);
+				});
 		}
 	}
 

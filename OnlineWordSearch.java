@@ -1,29 +1,42 @@
-import java.net.HttpUrlConnection;
+import java.io.*;
+import java.net.*;
 
 public class OnlineWordSearch {
 	
 	private static final int MAX_LETTERS = 15;
 	private static URL url;
-	private static HttpUrlConnection connection;
+	//private static HttpUrlConnection connection;
 
-	public static char randomize(){
+	public static String randomize(){
 		randomize(MAX_LETTERS);
 
 	}
 
-	public static char randomize(int length){
+	public static String randomize(int length){
 		if(length > MAX_LETTERS)
 			length = MAX_LETTERS;
 
-		try{
-			url = new URL("http://randomword.setgetgo.com/get.php");
-			connection = (HttpUrlConnection)url.openConnection();
-			connection.setRequestMethod("GET");
-			connection.setRequestProperty("len",Integer.toString(MAX_LETTERS));
+		url = new URL(String.format("http://randomword.setgetgo.com/get.php?len=%d",length));
 
-
+		try {
+			InputStream is = url.openStream();
+			BufferedReader br = new BufferedReader(is);
+			StringBuilder response = new StringBuilder();
+			String line;
+			while((line=br.readLine())!= null){
+				response.append(line);
+				response.append('\r');
+			}
+			System.out.println(response.toString());
+			return response.toString().substring(0,'\r');
+		} catch(IOException ioe){
+			ioe.printStackTrace();
+		} catch(Exception e){
+			System.err.println(e.toString());
+		} finally {
+			if(br != null){
+				br.close();
+			}
 		}
-
-
 	}
 }
