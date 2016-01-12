@@ -49,6 +49,6 @@ public class OnlineWordSearch {
 	}
 
 	public boolean checkConnection(){
-		return false;
+		return true;
 	}
 }

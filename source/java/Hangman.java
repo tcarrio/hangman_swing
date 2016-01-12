@@ -6,7 +6,8 @@ import java.awt.*;
 public class Hangman
 {
 	private JFrame mainFrame;
-	private JPanel mainPanel,innerPanel,topPanel,bottPanel;
+	private JPanel mainPanel,innerPanel,topPanel,bottPanel,buttonPanel;
+	private JPanel[] subButtonPanels;
 	private GridBagConstraints c;
 	private JMenuBar mainMenu;
 	private JMenu fileMenu, helpMenu;
@@ -23,6 +24,9 @@ public class Hangman
 	private ActionListener startedListener, stoppedListener;
 	private Font titleFont,hangmanFont;
 	private HangmanWord hangmanWord;
+	private int bDimension;
+	private ArrayList<Character> searchedChars;
+	private boolean gameStatus;
 
 	/**
 	 * Sole constructor. Sets all global variables within Hangman class.
@@ -52,16 +56,27 @@ public class Hangman
 		mainFrame = new JFrame();
 		mainPanel = new JPanel(new BorderLayout());
 		innerPanel = new JPanel(new BorderLayout());
+		buttonPanel = new JPanel(new GridLayout(3,1));
+		subButtonPanels = new JPanel[3];
+		for(int i=0;i<subButtonPanels.length;i++){
+			subButtonPanels[i]=new JPanel(new GridBagLayout());
+		}
 		bottPanel = new JPanel(new GridBagLayout());
 		topPanel = new JPanel(new GridBagLayout());
-		c = new GridBagConstraints();
 		mainMenu = new JMenuBar();
 		fileMenu = new JMenu(FILE_STR);
 		helpMenu = new JMenu(HELP_STR);
 		quitItem = new JMenuItem(QUIT_STR);
 		aboutItem = new JMenuItem(ABOUT_STR);
 		hangmanWord = new HangmanWord();
-		
+		bDimension = 128;
+		searchedChars = new ArrayList<>(26);
+		actionButton = new JButton(START_STR);
+
+		// Constraits setup
+		c = new GridBagConstraints();
+		c.fill=GridBagConstraints.BOTH;
+
 		// Generate JButtons array using alphabet
 		alphaButtons = new ArrayList<JButton>();
         alphabet.stream()
@@ -87,7 +102,7 @@ public class Hangman
 		stoppedListener = 
 			new ActionListener(){
 				public void actionPerformed(ActionEvent ev){
-					new JToast(null,null);
+					//new JToast(null,null);
 				}
 			};
 
@@ -106,10 +121,27 @@ public class Hangman
 		mainFrame.setJMenuBar(mainMenu);
 		innerPanel.add(hangmanWord,BorderLayout.PAGE_START);
 
+		// JButton/Panel setup
+		alphaButtons.stream()
+					.forEach(b -> b.setSize(bDimension,bDimension));
+
+		for(int i=0; i<alphaButtons.size();i++){
+			c.gridx=i%10;
+			subButtonPanels[i/10].add(alphaButtons.get(i),c);
+		}
+		for(JPanel j : subButtonPanels){
+			buttonPanel.add(j);
+		}
+		innerPanel.add(buttonPanel,BorderLayout.CENTER);
+
+		// Start/Stop game panel setup
+		bottPanel.add(actionButton);
+
 		// Title setup
 		topPanel.add(welcomeLabel);
 		mainFrame.add(topPanel,BorderLayout.PAGE_START);
 		mainFrame.add(innerPanel,BorderLayout.CENTER);
+		mainFrame.add(bottPanel,BorderLayout.PAGE_END);
 
 		// display to user
 		mainFrame.setVisible(true);
@@ -127,7 +159,9 @@ public class Hangman
      * @return  whether the game was succesfully started       
      */          
 	private boolean startGame(){
-		return false;
+		actionButton.setText(START_STR);
+		gameStatus=true;
+		return true;
 	}
 
 	/**      
@@ -140,7 +174,9 @@ public class Hangman
 	 * @return 	whether the game was succesfully stopped 
 	 */     
 	private boolean stopGame(){
-		return false;
+		actionButton.setText(STOP_STR);
+		gameStatus=false;
+		return true;
 	}
 
 	/**
