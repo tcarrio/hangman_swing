@@ -2,6 +2,7 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class ConfigLoader{
@@ -12,12 +13,14 @@ public class ConfigLoader{
 		= new HashMap<>();
 	private static boolean loaded = false;
 	private static ArrayList<String> configKeys
-		= Arrays.asList(
+		= new ArrayList<>(Arrays.asList(
 			"verbose",
 			"config_file",
 			"use_network",
 			"user_name",
-			"max_tries");
+			"max_tries"));
+    private static ArrayList<String> configList;
+    private static BufferedReader reader;
 
 	/**
 	 * Loads the configuration using the default filename
@@ -31,15 +34,14 @@ public class ConfigLoader{
 	private static void loadConfig(){
 		
 		try {
-			ArrayList<String> configList = new ArrayList<>();
-			BufferedReader reader = new BufferedReader(
+			configList = new ArrayList<>();
+			reader = new BufferedReader(
 				new FileReader(configFileName));
 			String buffer;
 			while((buffer=reader.readLine())!= null){
 					configList.add(buffer);
-				}
 			}
-		} catch (IOException ioe){
+		} catch(IOException ioe){
 			ioe.printStackTrace();
 		} finally {
 			try {
