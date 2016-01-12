@@ -47,4 +47,8 @@ public class OnlineWordSearch {
         }
         return "";
 	}
+
+	public boolean checkConnection(){
+		return false;
+	}
 }
