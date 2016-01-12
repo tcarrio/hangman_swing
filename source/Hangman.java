@@ -1,11 +1,13 @@
 import javax.swing.*;
 import java.util.*;
 import java.awt.event.*;
+import java.awt.*;
 
 public class Hangman
 {
 	private JFrame mainFrame;
-	private JPanel mainPanel;
+	private JPanel mainPanel,innerPanel,topPanel,bottPanel;
+	private GridBagConstraints c;
 	private JMenuBar mainMenu;
 	private JMenu fileMenu, helpMenu;
 	private JMenuItem quitItem, aboutItem;
@@ -17,7 +19,9 @@ public class Hangman
 	private char[] alphabet;
 	private JLabel welcomeLabel, wordLabel;
 	private WordGenerator wordGen;
+	private final int X_SIZE=720, Y_SIZE=480;
 	private ActionListener startedListener, stoppedListener;
+	private Font titleFont;
 
 	/**
 	 * Sole constructor. Sets all global variables within Hangman class.
@@ -37,12 +41,18 @@ public class Hangman
 		disKeyTitle = "Error: Game not started!";
 
 		// Generate character array (0:A, 1:B, etc.)
-		alphabet = new char[] {'A','B','C','D','E','F','G','H','I','J','K','L',
-			'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+        ArrayList<Character> alphabet = new ArrayList<>(
+                Arrays.asList('A','B','C','D','E','F','G','H','I','J','K','L',
+                        'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z')
+        );
 
 		// Initialize all GUI elements
 		mainFrame = new JFrame();
-		mainPanel = new JPanel();
+		mainPanel = new JPanel(new BorderLayout());
+		innerPanel = new JPanel(new BorderLayout());
+		bottPanel = new JPanel(new GridBagLayout());
+		topPanel = new JPanel(new GridBagLayout());
+		c = new GridBagConstraints();
 		mainMenu = new JMenuBar();
 		fileMenu = new JMenu(fileStr);
 		helpMenu = new JMenu(helpStr);
@@ -51,23 +61,50 @@ public class Hangman
 		
 		// Generate JButtons array using alphabet
 		alphaButtons = new ArrayList<JButton>();
-		for(char c: alphabet){
-			alphaButtons.add(new JButton(c));
-		}
+        alphabet.stream()
+                .forEach(c ->
+                    alphaButtons.add(new JButton(
+                    Character.toString(c))));
 
+		titleFont = new Font("Arial",Font.BOLD,24);
 		welcomeLabel = new JLabel(welcomeStr);
+		welcomeLabel.setFont(titleFont);
 		startedListener = 
 			new ActionListener(){
 				public void actionPerformed(ActionEvent ev){
-					onLetterClicked(Character.parseChar(ev.getSource().getText().strip()));
+					onLetterClicked(
+						((JButton)ev.getSource())
+						.getText().charAt(0));
 				}
-			}
+			};
 		stoppedListener = 
 			new ActionListener(){
 				public void actionPerformed(ActionEvent ev){
-					// 
+					// display JToast
 				}
-			}
+			};
+
+		// setup GUI elements
+		mainFrame.setTitle("Java Application Test");
+		mainFrame.setSize(X_SIZE,Y_SIZE);
+		Dimension winDim = getWindowLocation();
+		mainFrame.setLocation((int)winDim.getWidth(),(int)winDim.getHeight());
+
+		// Menu setup
+		fileMenu.add(quitItem);
+		helpMenu.add(aboutItem);
+		mainMenu.add(fileMenu);
+		mainMenu.add(helpMenu);
+		mainFrame.setJMenuBar(mainMenu);
+
+		// Title setup
+		topPanel.add(welcomeLabel);
+		mainFrame.add(topPanel,BorderLayout.PAGE_START);
+
+
+
+		// display to user
+		mainFrame.setVisible(true);
 
 	}
 
@@ -82,7 +119,7 @@ public class Hangman
      * @return  whether the game was succesfully started       
      */          
 	private boolean startGame(){
-		
+		return false;
 	}
 
 	/**      
@@ -95,7 +132,7 @@ public class Hangman
 	 * @return 	whether the game was succesfully stopped 
 	 */     
 	private boolean stopGame(){
-		
+		return false;
 	}
 
 	/**
@@ -113,6 +150,23 @@ public class Hangman
 		// returns 0 if bad guess
 		// returns 1 if letter found
 		// returns 2 if letter searched already
+		return -1;
+	}
+
+	/**
+	 * Calculates the location to put the application window upon startup.
+	 *
+	 * Uses the screen resolution of the system and calculates where to place
+	 * the JFrame on the screen to moreover center the application for the 
+	 * user. 
+	 *
+	 * @return 	Dimension 	contains the (x,y) coordinates for the application
+	 */
+	private Dimension getWindowLocation(){
+		Dimension sysDim = Toolkit.getDefaultToolkit().getScreenSize();
+		int x = (int)(sysDim.getWidth()-X_SIZE)/2;
+		int y = (int)(sysDim.getHeight()-Y_SIZE)/2;
+		return new Dimension(x,y);
 	}
 
 	/**
@@ -127,13 +181,17 @@ public class Hangman
 		if(start){
 			alphaButtons.parallelStream()
 				.forEach(b -> {
-					b.removeActionListener();
+					for(ActionListener a : b.getActionListeners()){
+						b.removeActionListener(a);
+					}
 					b.addActionListener(startedListener);
 				});
 		} else {
 			alphaButtons.parallelStream()
 				.forEach(b -> {
-					b.removeActionListener();
+					for(ActionListener a : b.getActionListeners()){
+						b.removeActionListener(a);
+					}
 					b.addActionListener(stoppedListener);
 				});
 		}
@@ -145,7 +203,7 @@ public class Hangman
 	 *
 	 * @param 	args 	arguments passed in to the application at runtime
 	 */
-	private static void main(String[] args){
+	public static void main(String[] args){
 		new Hangman();
 	}
 
