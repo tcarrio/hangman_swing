@@ -6,7 +6,8 @@ import java.awt.*;
 public class Hangman
 {
 	private JFrame mainFrame;
-	private JPanel mainPanel;
+	private JPanel mainPanel,innerPanel,topPanel,bottPanel;
+	private GridBagConstraints c;
 	private JMenuBar mainMenu;
 	private JMenu fileMenu, helpMenu;
 	private JMenuItem quitItem, aboutItem;
@@ -20,6 +21,7 @@ public class Hangman
 	private WordGenerator wordGen;
 	private final int X_SIZE=720, Y_SIZE=480;
 	private ActionListener startedListener, stoppedListener;
+	private Font titleFont;
 
 	/**
 	 * Sole constructor. Sets all global variables within Hangman class.
@@ -46,7 +48,11 @@ public class Hangman
 
 		// Initialize all GUI elements
 		mainFrame = new JFrame();
-		mainPanel = new JPanel();
+		mainPanel = new JPanel(new BorderLayout());
+		innerPanel = new JPanel(new BorderLayout());
+		bottPanel = new JPanel(new GridBagLayout());
+		topPanel = new JPanel(new GridBagLayout());
+		c = new GridBagConstraints();
 		mainMenu = new JMenuBar();
 		fileMenu = new JMenu(fileStr);
 		helpMenu = new JMenu(helpStr);
@@ -60,7 +66,9 @@ public class Hangman
                     alphaButtons.add(new JButton(
                     Character.toString(c))));
 
+		titleFont = new Font("Arial",Font.BOLD,24);
 		welcomeLabel = new JLabel(welcomeStr);
+		welcomeLabel.setFont(titleFont);
 		startedListener = 
 			new ActionListener(){
 				public void actionPerformed(ActionEvent ev){
@@ -82,10 +90,20 @@ public class Hangman
 		Dimension winDim = getWindowLocation();
 		mainFrame.setLocation((int)winDim.getWidth(),(int)winDim.getHeight());
 
+		// Menu setup
+		fileMenu.add(quitItem);
+		helpMenu.add(aboutItem);
+		mainMenu.add(fileMenu);
+		mainMenu.add(helpMenu);
+		mainFrame.setJMenuBar(mainMenu);
+
+		// Title setup
+		topPanel.add(welcomeLabel);
+		mainFrame.add(topPanel,BorderLayout.PAGE_START);
 
 
 
-
+		// display to user
 		mainFrame.setVisible(true);
 
 	}
@@ -135,6 +153,15 @@ public class Hangman
 		return -1;
 	}
 
+	/**
+	 * Calculates the location to put the application window upon startup.
+	 *
+	 * Uses the screen resolution of the system and calculates where to place
+	 * the JFrame on the screen to moreover center the application for the 
+	 * user. 
+	 *
+	 * @return 	Dimension 	contains the (x,y) coordinates for the application
+	 */
 	private Dimension getWindowLocation(){
 		Dimension sysDim = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = (int)(sysDim.getWidth()-X_SIZE)/2;
