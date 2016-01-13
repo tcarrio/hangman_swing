@@ -19,7 +19,8 @@ public class OnlineWordSearch {
 			length = MAX_LETTERS;
 
 		try {
-			url = new URL(String.format("http://randomword.setgetgo.com/get.php?len=%d",length));
+			url = new URL(String.format(
+				"http://randomword.setgetgo.com/get.php?len=%d",length));
 			is = url.openStream();
 			isr = new InputStreamReader(is);
 			br = new BufferedReader(isr);
@@ -49,6 +50,6 @@ public class OnlineWordSearch {
 	}
 
 	public boolean checkConnection(){
-		return true;
+		return false;
 	}
 }

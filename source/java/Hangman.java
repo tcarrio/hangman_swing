@@ -21,7 +21,8 @@ public class Hangman
 	private JLabel welcomeLabel, wordLabel;
 	private WordGenerator wordGen;
 	private final int X_SIZE=720, Y_SIZE=480;
-	private ActionListener startedListener, stoppedListener;
+	private ActionListener startedListener, stoppedListener, gameListener;
+	private Action startedAction, stoppedAction;
 	private Font titleFont,hangmanFont;
 	private HangmanWord hangmanWord;
 	private int bDimension;
@@ -61,7 +62,7 @@ public class Hangman
 		for(int i=0;i<subButtonPanels.length;i++){
 			subButtonPanels[i]=new JPanel(new GridBagLayout());
 		}
-		bottPanel = new JPanel(new GridBagLayout());
+		bottPanel = new JPanel(new BorderLayout());
 		topPanel = new JPanel(new GridBagLayout());
 		mainMenu = new JMenuBar();
 		fileMenu = new JMenu(FILE_STR);
@@ -73,7 +74,7 @@ public class Hangman
 		searchedChars = new ArrayList<>(26);
 		actionButton = new JButton(START_STR);
 
-		// Constraits setup
+		// Constraints setup
 		c = new GridBagConstraints();
 		c.fill=GridBagConstraints.BOTH;
 
@@ -94,6 +95,7 @@ public class Hangman
 		startedListener = 
 			new ActionListener(){
 				public void actionPerformed(ActionEvent ev){
+					//System.out.println("Button clicked");
 					onLetterClicked(
 						((JButton)ev.getSource())
 						.getText().charAt(0));
@@ -102,9 +104,39 @@ public class Hangman
 		stoppedListener = 
 			new ActionListener(){
 				public void actionPerformed(ActionEvent ev){
+					System.err.println(
+						"Game has not been started!");
 					//new JToast(null,null);
 				}
 			};
+		gameListener = 
+			new ActionListener(){
+				public void actionPerformed(ActionEvent ev){
+					if(gameStatus)
+						stopGame();
+					else
+						startGame();
+				}
+			};
+		startedAction = 
+			new AbstractAction(){
+				public void actionPerformed(ActionEvent ev){
+					//System.out.println("Button clicked");
+					onLetterClicked(
+						((JButton)ev.getSource())
+						.getText().charAt(0));
+				}
+			};
+		stoppedAction = 
+			new AbstractAction(){
+				public void actionPerformed(ActionEvent ev){
+					System.err.println(
+						"Game has not been started!");
+					//new JToast(null,null);
+				}
+			};
+
+		actionButton.addActionListener(gameListener);
 
 		// setup GUI elements
 		mainFrame.setTitle(TITLE_STR);
@@ -121,10 +153,7 @@ public class Hangman
 		mainFrame.setJMenuBar(mainMenu);
 		innerPanel.add(hangmanWord,BorderLayout.PAGE_START);
 
-		// JButton/Panel setup
-		alphaButtons.stream()
-					.forEach(b -> b.setSize(bDimension,bDimension));
-
+		// JButton panel setup
 		for(int i=0; i<alphaButtons.size();i++){
 			c.gridx=i%10;
 			subButtonPanels[i/10].add(alphaButtons.get(i),c);
@@ -135,7 +164,7 @@ public class Hangman
 		innerPanel.add(buttonPanel,BorderLayout.CENTER);
 
 		// Start/Stop game panel setup
-		bottPanel.add(actionButton);
+		bottPanel.add(actionButton,BorderLayout.LINE_START);
 
 		// Title setup
 		topPanel.add(welcomeLabel);
@@ -159,7 +188,10 @@ public class Hangman
      * @return  whether the game was succesfully started       
      */          
 	private boolean startGame(){
-		actionButton.setText(START_STR);
+		System.out.println("Game started");
+		hangmanWord.newGame();
+		setButtonListeners(true);
+		actionButton.setText(STOP_STR);
 		gameStatus=true;
 		return true;
 	}
@@ -174,7 +206,9 @@ public class Hangman
 	 * @return 	whether the game was succesfully stopped 
 	 */     
 	private boolean stopGame(){
-		actionButton.setText(STOP_STR);
+		System.out.println("Game stopped");
+		setButtonListeners(false);
+		actionButton.setText(START_STR);
 		gameStatus=false;
 		return true;
 	}
@@ -191,10 +225,18 @@ public class Hangman
 	 * @return 	int 	status code for letter search
 	 */
 	private int onLetterClicked(char letter){
-		// returns 0 if bad guess
-		// returns 1 if letter found
-		// returns 2 if letter searched already
-		return -1;
+		int code;
+		if(searchedChars.contains(letter)){
+			code = 2;
+		} else {
+			code = hangmanWord.revealLetter(letter);
+		}
+		System.out.print(code);
+		return code;
+
+		// return (searchedChars.contained(letter))
+		// 		? 2
+		// 		: hangmanWord.revealLetter(letter)
 	}
 
 	/**
@@ -229,6 +271,10 @@ public class Hangman
 						b.removeActionListener(a);
 					}
 					b.addActionListener(startedListener);
+					b.getInputMap().put(
+						KeyStroke.getKeyStroke(b.getText(),"pressed"));
+					b.getActionMap().put(
+						"pressed",startedListener);
 				});
 		} else {
 			alphaButtons.parallelStream()
@@ -237,6 +283,10 @@ public class Hangman
 						b.removeActionListener(a);
 					}
 					b.addActionListener(stoppedListener);
+					b.getInputMap().put(
+						KeyStroke.getKeyStroke(b.getText(),"pressed"));
+					b.getActionMap().put("pressed",
+						stoppedListener);
 				});
 		}
 	}
