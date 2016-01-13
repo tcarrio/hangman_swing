@@ -1,4 +1,4 @@
-# hangman_prelim
+# hangman_swing
 Preliminary Hangman Java application for CSE-337 using Java Swing
 
 # about
