@@ -12,7 +12,7 @@ public class HangmanWord extends JLabel{
     private String displayWord;
     private String defaultDisplay;
     private WordGenerator wordGen;
-    private int corrected;
+    private int corrected,wrong;
 
     /**
      * Default constructor for HangmanWord label for the game
@@ -35,13 +35,14 @@ public class HangmanWord extends JLabel{
      */ 
     public void newGame(){
         corrected=0;
+        wrong=0;
     	secretWord = wordGen.randomize();
         displayWord = generateDisplayWord(secretWord);
         super.setText(displayWord);
     }
 
     /**
-     *
+     * 
      */
     public void endGame(){
     	secretWord="";
@@ -94,37 +95,13 @@ public class HangmanWord extends JLabel{
             if(letter==swArr[i]){
                 dwArr[i]=letter;
                 code = 1;
+                corrected++;
             }
         }
         displayWord = new String(dwArr);
         super.setText(displayWord);
+        if(code==0)
+            wrong++;
         return code;
-    }
-
-    /**
-     * Publicly accessible method to search for the given Character
-     *
-     * Recursive method used to search for and reveal the given
-     * letter in the secret word. Collects all indices of instances of the character 
-     * in a list which will be used to replace all characters in the String and set 
-     * the text to the new output, reflecting the success/failure of the user 
-     *
-     * @return 	int 	whether any characters were found
-	 * @param 	Character 		the letter to search for in the secret word
-	 * @param 	int 		index to search from (starts at 0)
-	 * @param 	ArrayList	list to be filled with integer indices
-     */
-    private int revealLetter(Character letter, int ind,
-    	ArrayList<Integer> list){
-
-    	ind=secretWord.indexOf(letter,ind);
-    	if(ind!=-1 && ind<secretWord.length()){
-    		list.add(ind);
-            System.out.println("Second run:");
-    		revealLetter(letter,ind,list);
-    	} else {
-    		
-    	}
-    	return 0;
     }
 }

@@ -6,7 +6,8 @@ import java.awt.*;
 public class Hangman
 {
 	private JFrame mainFrame;
-	private JPanel mainPanel,innerPanel,topPanel,bottPanel,buttonPanel;
+	private JPanel innerPanel,topPanel,bottPanel,buttonPanel;
+	private JComponent mainPanel;
 	private JPanel[] subButtonPanels;
 	private GridBagConstraints c;
 	private JMenuBar mainMenu;
@@ -55,7 +56,8 @@ public class Hangman
 
 		// Initialize all GUI elements
 		mainFrame = new JFrame();
-		mainPanel = new JPanel(new BorderLayout());
+		mainPanel = (JComponent)mainFrame.getContentPane();
+		mainPanel.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 		innerPanel = new JPanel(new BorderLayout());
 		buttonPanel = new JPanel(new GridLayout(3,1));
 		subButtonPanels = new JPanel[3];
@@ -272,9 +274,9 @@ public class Hangman
 					}
 					b.addActionListener(startedListener);
 					b.getInputMap().put(
-						KeyStroke.getKeyStroke(b.getText(),"pressed"));
+						KeyStroke.getKeyStroke(b.getText().charAt(0)),"pressed");
 					b.getActionMap().put(
-						"pressed",startedListener);
+						"pressed",startedAction);
 				});
 		} else {
 			alphaButtons.parallelStream()
@@ -284,9 +286,9 @@ public class Hangman
 					}
 					b.addActionListener(stoppedListener);
 					b.getInputMap().put(
-						KeyStroke.getKeyStroke(b.getText(),"pressed"));
+						KeyStroke.getKeyStroke(b.getText().charAt(0)),"pressed");
 					b.getActionMap().put("pressed",
-						stoppedListener);
+						stoppedAction);
 				});
 		}
 	}
