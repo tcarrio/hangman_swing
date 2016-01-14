@@ -6,25 +6,31 @@ import java.awt.*;
 public class Hangman
 {
 	private JFrame mainFrame;
-	private JPanel mainPanel,innerPanel,topPanel,bottPanel,buttonPanel;
+	private JPanel innerPanel,topPanel,bottPanel,buttonPanel,welcomePanel,
+		feedbackPanel, outputPanel;
+	private JComponent mainPanel;
 	private JPanel[] subButtonPanels;
-	private GridBagConstraints c;
+	private GridBagConstraints butC, topC;
 	private JMenuBar mainMenu;
 	private JMenu fileMenu, helpMenu;
 	private JMenuItem quitItem, aboutItem;
 	private final String WELCOME_STR, FILE_STR, HELP_STR, QUIT_STR, ABOUT_STR, 
-		START_STR, STOP_STR, DIS_KEY_MSG, DIS_KEY_TITLE, TITLE_STR;
+		START_STR, STOP_STR, TITLE_STR, GAME_STOPPED,
+		GAME_STARTED, LOST_STR, WON_STR,NOT_STARTED;
 	private JButton actionButton;
 	private ArrayList<JButton> alphaButtons;
 	private HashMap<Character,Boolean> prevSearch;
 	private char[] alphabet;
-	private JLabel welcomeLabel, wordLabel;
+	private JLabel welcomeLabel, outputLabel;
+	private TimedLabel feedbackLabel;
 	private WordGenerator wordGen;
 	private final int X_SIZE=720, Y_SIZE=480;
-	private ActionListener startedListener, stoppedListener;
+	private ActionListener startedListener, stoppedListener, gameListener;
+	private Action startedAction, stoppedAction;
 	private Font titleFont,hangmanFont;
 	private HangmanWord hangmanWord;
-	private int bDimension;
+	private int bDimInt;
+	private Dimension buttonDim;
 	private ArrayList<Character> searchedChars;
 	private boolean gameStatus;
 
@@ -43,8 +49,11 @@ public class Hangman
 		HELP_STR = "Help";
 		QUIT_STR = "Quit";
 		ABOUT_STR = "About";
-		DIS_KEY_MSG = "Keys disabled while game is stopped";
-		DIS_KEY_TITLE = "Error: Game not started!";
+		GAME_STOPPED = "Game stopped";
+		GAME_STARTED = "Game started";
+		LOST_STR = "You lost!";
+		WON_STR = "You won!";
+		NOT_STARTED = "Game not started!";
 
 		// Generate character array (0:A, 1:B, etc.)
         ArrayList<Character> alphabet = new ArrayList<>(
@@ -54,29 +63,33 @@ public class Hangman
 
 		// Initialize all GUI elements
 		mainFrame = new JFrame();
-		mainPanel = new JPanel(new BorderLayout());
+		mainPanel = (JComponent)mainFrame.getContentPane();
+		mainPanel.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 		innerPanel = new JPanel(new BorderLayout());
 		buttonPanel = new JPanel(new GridLayout(3,1));
 		subButtonPanels = new JPanel[3];
 		for(int i=0;i<subButtonPanels.length;i++){
 			subButtonPanels[i]=new JPanel(new GridBagLayout());
 		}
-		bottPanel = new JPanel(new GridBagLayout());
-		topPanel = new JPanel(new GridBagLayout());
+		bottPanel = new JPanel(new BorderLayout());
+		topPanel = new JPanel(new BorderLayout());
 		mainMenu = new JMenuBar();
 		fileMenu = new JMenu(FILE_STR);
 		helpMenu = new JMenu(HELP_STR);
 		quitItem = new JMenuItem(QUIT_STR);
 		aboutItem = new JMenuItem(ABOUT_STR);
 		hangmanWord = new HangmanWord();
-		bDimension = 128;
+		bDimInt = 50;
 		searchedChars = new ArrayList<>(26);
 		actionButton = new JButton(START_STR);
+		buttonDim = new Dimension(bDimInt,bDimInt);
 
-		// Constraits setup
-		c = new GridBagConstraints();
-		c.fill=GridBagConstraints.BOTH;
-
+		// Constraints setup
+		butC = new GridBagConstraints();
+		butC.insets=new Insets(0,5,0,5);
+		butC.fill=GridBagConstraints.BOTH;
+		topC = new GridBagConstraints();
+		
 		// Generate JButtons array using alphabet
 		alphaButtons = new ArrayList<JButton>();
         alphabet.stream()
@@ -85,26 +98,83 @@ public class Hangman
                     Character.toString(c))));
 
 		titleFont = new Font("Arial",Font.BOLD,24);
+
+		welcomePanel = new JPanel();
+		welcomePanel.setPreferredSize(
+			new Dimension(360,45));
 		welcomeLabel = new JLabel(WELCOME_STR);
 		welcomeLabel.setFont(titleFont);
+		welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		welcomePanel.add(welcomeLabel);
+
+		outputPanel = new JPanel();
+		outputPanel.setPreferredSize(new Dimension(180,45));
+		outputLabel = new JLabel(); //hangmanWord.getOutputLabel()
+		outputLabel.setFont(titleFont);
+		outputLabel.setForeground(Color.WHITE);
+		outputLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		outputPanel.add(outputLabel);
+
+		feedbackPanel = new JPanel();
+		feedbackPanel.setPreferredSize(
+			new Dimension(180,45));
+		//feedbackPanel.setOpaque(false);
+		feedbackLabel = new TimedLabel();
+		feedbackLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		feedbackPanel.add(feedbackLabel);
 		
 		hangmanFont = new Font("Arial",Font.BOLD,48);
 		hangmanWord.setFont(hangmanFont);
+		stopGame();
 		
 		startedListener = 
 			new ActionListener(){
 				public void actionPerformed(ActionEvent ev){
+					//System.out.println("Button clicked");
 					onLetterClicked(
 						((JButton)ev.getSource())
 						.getText().charAt(0));
+					outputLabel.setText(checkGameString());
 				}
 			};
 		stoppedListener = 
 			new ActionListener(){
 				public void actionPerformed(ActionEvent ev){
+					feedbackLabel.shortText(
+						NOT_STARTED);
 					//new JToast(null,null);
 				}
 			};
+		gameListener = 
+			new ActionListener(){
+				public void actionPerformed(ActionEvent ev){
+					if(gameStatus){
+						stopGame();
+						outputLabel.setText(checkGameString());
+					} else{
+						startGame();
+					}
+				}
+			};
+		startedAction = 
+			new AbstractAction(){
+				public void actionPerformed(ActionEvent ev){
+					//System.out.println("Button clicked");
+					onLetterClicked(
+						((JButton)ev.getSource())
+						.getText().charAt(0));
+				}
+			};
+		stoppedAction = 
+			new AbstractAction(){
+				public void actionPerformed(ActionEvent ev){
+					System.err.println(
+						"Game has not been started!");
+					//new JToast(null,null);
+				}
+			};
+
+		actionButton.addActionListener(gameListener);
 
 		// setup GUI elements
 		mainFrame.setTitle(TITLE_STR);
@@ -121,13 +191,11 @@ public class Hangman
 		mainFrame.setJMenuBar(mainMenu);
 		innerPanel.add(hangmanWord,BorderLayout.PAGE_START);
 
-		// JButton/Panel setup
-		alphaButtons.stream()
-					.forEach(b -> b.setSize(bDimension,bDimension));
-
+		// JButton panel setup
 		for(int i=0; i<alphaButtons.size();i++){
-			c.gridx=i%10;
-			subButtonPanels[i/10].add(alphaButtons.get(i),c);
+			alphaButtons.get(i).setPreferredSize(buttonDim);
+			butC.gridx=i%10;
+			subButtonPanels[i/10].add(alphaButtons.get(i),butC);
 		}
 		for(JPanel j : subButtonPanels){
 			buttonPanel.add(j);
@@ -135,17 +203,21 @@ public class Hangman
 		innerPanel.add(buttonPanel,BorderLayout.CENTER);
 
 		// Start/Stop game panel setup
-		bottPanel.add(actionButton);
+		bottPanel.add(actionButton,BorderLayout.LINE_START);
 
 		// Title setup
-		topPanel.add(welcomeLabel);
+		topPanel.add(outputPanel,BorderLayout.LINE_START);
+		topPanel.add(welcomePanel,BorderLayout.CENTER);
+		topPanel.add(feedbackPanel,BorderLayout.LINE_END);
+
+
 		mainFrame.add(topPanel,BorderLayout.PAGE_START);
 		mainFrame.add(innerPanel,BorderLayout.CENTER);
 		mainFrame.add(bottPanel,BorderLayout.PAGE_END);
 
 		// display to user
 		mainFrame.setVisible(true);
-
+		
 	}
 
     /**       
@@ -159,7 +231,11 @@ public class Hangman
      * @return  whether the game was succesfully started       
      */          
 	private boolean startGame(){
-		actionButton.setText(START_STR);
+		outputPanel.setBackground(Color.GRAY);
+		outputLabel.setText(GAME_STARTED);
+		hangmanWord.newGame();
+		setButtonListeners(true);
+		actionButton.setText(STOP_STR);
 		gameStatus=true;
 		return true;
 	}
@@ -174,7 +250,10 @@ public class Hangman
 	 * @return 	whether the game was succesfully stopped 
 	 */     
 	private boolean stopGame(){
-		actionButton.setText(STOP_STR);
+		searchedChars.clear();
+		hangmanWord.endGame();
+		setButtonListeners(false);
+		actionButton.setText(START_STR);
 		gameStatus=false;
 		return true;
 	}
@@ -191,10 +270,45 @@ public class Hangman
 	 * @return 	int 	status code for letter search
 	 */
 	private int onLetterClicked(char letter){
-		// returns 0 if bad guess
-		// returns 1 if letter found
-		// returns 2 if letter searched already
-		return -1;
+		int code;
+		if(searchedChars.contains(letter)){
+			code = 2;
+			feedbackLabel.shortText(letter+" searched before");
+		} else {
+			code = hangmanWord.revealLetter(letter);
+			searchedChars.add(letter);
+		}
+		return code;
+	}
+
+
+	/**
+	 * Logically concludes the status of the game using the game object
+	 *
+	 * Calls the isGameOver method of the HangmanWord object to obtain the
+	 * status code for the game. Returns a string to be used for the outputLabel
+	 * object to display to user.
+	 *
+	 * @return 	String 	the status of the game
+	 */
+	private String checkGameString(){
+		switch(hangmanWord.isGameOver()){
+			case 1:
+				// win
+				stopGame();
+				return WON_STR;
+			case 0:
+				// continue playing
+				return hangmanWord.gameStatusString();
+			case -1:
+				// lost
+				stopGame();
+				return LOST_STR;
+			case -2:
+				return GAME_STOPPED;
+			default:
+				return outputLabel.getText();
+		}
 	}
 
 	/**
@@ -229,6 +343,13 @@ public class Hangman
 						b.removeActionListener(a);
 					}
 					b.addActionListener(startedListener);
+					char thisChar = b.getText().charAt(0);
+					mainPanel.getInputMap().put(
+						KeyStroke.getKeyStroke(
+							Character.toLowerCase(
+								thisChar)),"pressed"+thisChar);
+					mainPanel.getActionMap().put("pressed"+thisChar,
+						startedAction);
 				});
 		} else {
 			alphaButtons.parallelStream()
@@ -237,6 +358,13 @@ public class Hangman
 						b.removeActionListener(a);
 					}
 					b.addActionListener(stoppedListener);
+					char thisChar = b.getText().charAt(0);
+					mainPanel.getInputMap().put(
+						KeyStroke.getKeyStroke(
+							Character.toLowerCase(
+								thisChar)),"pressed"+thisChar);
+					mainPanel.getActionMap().put("pressed"+thisChar,
+						stoppedAction);
 				});
 		}
 	}
