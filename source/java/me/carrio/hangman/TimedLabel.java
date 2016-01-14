@@ -1,3 +1,5 @@
+package me.carrio.hangman;
+
 import javax.swing.JLabel;
 
 public class TimedLabel extends JLabel{
@@ -25,6 +27,7 @@ public class TimedLabel extends JLabel{
 
 		public void run(){
 			try{
+				
 				Thread.sleep(2500);
 			} catch(Exception e){
 				;

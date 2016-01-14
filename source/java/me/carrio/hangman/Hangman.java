@@ -1,3 +1,5 @@
+package me.carrio.hangman;
+
 import javax.swing.*;
 import java.util.*;
 import java.awt.event.*;

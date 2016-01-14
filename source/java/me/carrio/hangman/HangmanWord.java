@@ -1,6 +1,5 @@
-/**
- * Created by tom on 1/10/16.
- */
+package me.carrio.hangman;
+
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.util.ArrayList;

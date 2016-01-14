@@ -1,3 +1,5 @@
+package me.carrio.hangman;
+
 import java.io.*;
 import java.net.*;
 import java.util.Random;

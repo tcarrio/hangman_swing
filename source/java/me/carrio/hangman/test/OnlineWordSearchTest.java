@@ -1,3 +1,5 @@
+package me.carrio.hangman
+
 public class OnlineWordSearchTest
 {
 	public static void main(String[] args)
