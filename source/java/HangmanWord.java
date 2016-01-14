@@ -12,7 +12,8 @@ public class HangmanWord extends JLabel{
     private String displayWord;
     private String defaultDisplay;
     private WordGenerator wordGen;
-    private int corrected,wrong;
+    private int corrected,wrong,totalTries;
+    private boolean playing;
 
     /**
      * Default constructor for HangmanWord label for the game
@@ -34,9 +35,11 @@ public class HangmanWord extends JLabel{
      * a local dummy variable to perform logic on and set text.
      */ 
     public void newGame(){
+        playing=true;
         corrected=0;
         wrong=0;
-    	secretWord = wordGen.randomize();
+        totalTries=10;
+    	secretWord = wordGen.newWord();
         displayWord = generateDisplayWord(secretWord);
         super.setText(displayWord);
     }
@@ -45,9 +48,9 @@ public class HangmanWord extends JLabel{
      * 
      */
     public void endGame(){
+        playing=false;
     	secretWord="";
     	displayWord=defaultDisplay;
-    	super.setText(displayWord);
     }
 
     /**
@@ -88,20 +91,45 @@ public class HangmanWord extends JLabel{
 	 * @param 	char 		the letter to search for in the secret word
      */
     public int revealLetter(Character letter){
-        int code = 0;
+        int code = 1;
         char[] swArr = secretWord.toCharArray();
         char[] dwArr = displayWord.toCharArray();
         for(int i=0;i<swArr.length;i++){
             if(letter==swArr[i]){
                 dwArr[i]=letter;
-                code = 1;
+                code = 0;
                 corrected++;
             }
         }
         displayWord = new String(dwArr);
         super.setText(displayWord);
-        if(code==0)
-            wrong++;
+        wrong+=code;
         return code;
     }
+
+    public int getTotalTries(){
+        return totalTries;
+    }
+
+    public int getCorrect(){
+        return corrected;
+    }
+
+    public int getWrong(){
+        return wrong;
+    }
+
+    public int isGameOver(){
+        if(playing)
+            return (wrong!=totalTries)
+                ? corrected/secretWord.length()
+                : -1; 
+        else
+            return -2;
+    }
+
+    public String gameStatusString(){
+        return String.format("Tries:%2d",wrong);
+    }
+
 }

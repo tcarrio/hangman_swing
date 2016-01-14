@@ -18,9 +18,9 @@ public class WordGenerator {
 		getLocalWords();
 	}
 
-	public String randomize(){
+	public String newWord(){
 		if(webSearch.checkConnection()){
-			randomWord = webSearch.randomize();
+			randomWord = webSearch.newWord();
 			return randomWord;
 		} else {
 			return randomLocalWord();
