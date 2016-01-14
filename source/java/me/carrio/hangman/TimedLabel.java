@@ -1,4 +1,4 @@
-package me.carrio.hangman;
+//package me.carrio.hangman;
 
 import javax.swing.JLabel;
 
@@ -7,8 +7,7 @@ public class TimedLabel extends JLabel{
 	private TimeThread timeThread;
 
 	public TimedLabel(){
-		super();
-		
+		super();		
 	}
 
 	public void shortText(String text){

@@ -1,4 +1,4 @@
-package me.carrio.hangman;
+//package me.carrio.hangman;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -12,7 +12,7 @@ public class WordGenerator {
 	private ArrayList<String> localWords;
 	private String randomWord;
 	private final String fname = 
-		"../source/python/data/word_list.ini";
+		"../data/word_list.ini";
 
 	public WordGenerator(){
 		webSearch = new OnlineWordSearch();

@@ -1,4 +1,4 @@
-package me.carrio.hangman;
+//package me.carrio.hangman;
 
 import java.io.*;
 import java.net.*;
