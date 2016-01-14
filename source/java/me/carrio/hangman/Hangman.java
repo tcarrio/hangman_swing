@@ -28,7 +28,6 @@ public class Hangman
 	private WordGenerator wordGen;
 	private final int X_SIZE=720, Y_SIZE=480;
 	private ActionListener startedListener, stoppedListener, gameListener;
-	private Action startedAction, stoppedAction;
 	private Font titleFont,hangmanFont;
 	private HangmanWord hangmanWord;
 	private int bDimInt;
@@ -121,7 +120,7 @@ public class Hangman
 		feedbackPanel.setPreferredSize(
 			new Dimension(180,45));
 		//feedbackPanel.setOpaque(false);
-		feedbackLabel = new TimedLabel();
+		feedbackLabel = new TimedLabel("");
 		feedbackLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		feedbackPanel.add(feedbackLabel);
 		
@@ -156,23 +155,6 @@ public class Hangman
 					} else{
 						startGame();
 					}
-				}
-			};
-		startedAction = 
-			new AbstractAction(){
-				public void actionPerformed(ActionEvent ev){
-					//System.out.println("Button clicked");
-					onLetterClicked(
-						((JButton)ev.getSource())
-						.getText().charAt(0));
-				}
-			};
-		stoppedAction = 
-			new AbstractAction(){
-				public void actionPerformed(ActionEvent ev){
-					System.err.println(
-						"Game has not been started!");
-					//new JToast(null,null);
 				}
 			};
 
@@ -345,13 +327,6 @@ public class Hangman
 						b.removeActionListener(a);
 					}
 					b.addActionListener(startedListener);
-					char thisChar = b.getText().charAt(0);
-					mainPanel.getInputMap().put(
-						KeyStroke.getKeyStroke(
-							Character.toLowerCase(
-								thisChar)),"pressed"+thisChar);
-					mainPanel.getActionMap().put("pressed"+thisChar,
-						startedAction);
 				});
 		} else {
 			alphaButtons.parallelStream()
@@ -360,13 +335,6 @@ public class Hangman
 						b.removeActionListener(a);
 					}
 					b.addActionListener(stoppedListener);
-					char thisChar = b.getText().charAt(0);
-					mainPanel.getInputMap().put(
-						KeyStroke.getKeyStroke(
-							Character.toLowerCase(
-								thisChar)),"pressed"+thisChar);
-					mainPanel.getActionMap().put("pressed"+thisChar,
-						stoppedAction);
 				});
 		}
 	}
