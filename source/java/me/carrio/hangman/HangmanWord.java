@@ -44,6 +44,8 @@ public class HangmanWord extends JLabel{
     }
 
     /**
+     * Resets variables to end the current game session
+     *
      * 
      */
     public void endGame(){
