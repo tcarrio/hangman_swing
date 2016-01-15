@@ -93,7 +93,6 @@ public class OnlineWordSearch {
 				response.append(line);
 				response.append('\r');
 			}
-			System.out.println(response.toString());
 			return response.toString().toUpperCase().substring(0,length);
 		} catch(IOException ioe){
 			ioe.printStackTrace();
@@ -120,11 +119,10 @@ public class OnlineWordSearch {
 	public boolean checkConnection(){
 		try{
 			URL test = new URL("http://www.google.com");
-			InputStream isTest = url.openStream();
+			InputStream isTest = test.openStream();
 			return true;
 		} catch(Exception e){
 			return false;
 		}
-		return false;
 	}
 }

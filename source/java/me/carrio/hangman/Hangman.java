@@ -17,8 +17,8 @@ public class Hangman
 	private JMenu fileMenu, helpMenu;
 	private JMenuItem quitItem, aboutItem;
 	private final String WELCOME_STR, FILE_STR, HELP_STR, QUIT_STR, ABOUT_STR, 
-		START_STR, STOP_STR, TITLE_STR, GAME_STOPPED,
-		GAME_STARTED, LOST_STR, WON_STR,NOT_STARTED;
+		START_STR, STOP_STR, TITLE_STR, GAME_STOPPED, GAME_STARTED, LOST_STR, 
+		WON_STR,NOT_STARTED, ABOUT_CONTENT;
 	private JButton actionButton;
 	private ArrayList<JButton> alphaButtons;
 	private HashMap<Character,Boolean> prevSearch;
@@ -27,7 +27,8 @@ public class Hangman
 	private TimedLabel feedbackLabel;
 	private WordGenerator wordGen;
 	private final int X_SIZE=720, Y_SIZE=480;
-	private ActionListener startedListener, stoppedListener, gameListener;
+	private ActionListener startedListener, stoppedListener, gameListener,
+		quitListener, aboutListener;
 	private Font titleFont,hangmanFont;
 	private HangmanWord hangmanWord;
 	private int bDimInt;
@@ -55,6 +56,11 @@ public class Hangman
 		LOST_STR = "You lost!";
 		WON_STR = "You won!";
 		NOT_STARTED = "Game not started!";
+		ABOUT_CONTENT = "This is the preliminary Java application for CSE-337\n"
+			+ "at Oakland University. This application is meant to demonstrate our \n"
+			+ "understanding of Java programming and simple software design.\n\n"
+			+ "All rights reserved, Copyright 2015 Thomas Carrio\n\n"
+			+ "More information can be found at http://hangman.carrio.me";
 
 		// Generate character array (0:A, 1:B, etc.)
         ArrayList<Character> alphabet = new ArrayList<>(
@@ -128,6 +134,18 @@ public class Hangman
 		hangmanWord.setFont(hangmanFont);
 		stopGame();
 		
+		quitListener =
+			new ActionListener(){
+				public void actionPerformed(ActionEvent ev){
+					mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING));
+				}
+			};
+		aboutListener = 
+			new ActionListener(){
+				public void actionPerformed(ActionEvent ev){
+					JOptionPane.showMessageDialog(null,ABOUT_CONTENT,ABOUT_STR,JOptionPane.PLAIN_MESSAGE);
+				}
+			};
 		startedListener = 
 			new ActionListener(){
 				public void actionPerformed(ActionEvent ev){
@@ -168,6 +186,8 @@ public class Hangman
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		// Menu setup
+		quitItem.addActionListener(quitListener);
+		aboutItem.addActionListener(aboutListener);
 		fileMenu.add(quitItem);
 		helpMenu.add(aboutItem);
 		mainMenu.add(fileMenu);
