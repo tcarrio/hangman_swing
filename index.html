@@ -1,61 +1,157 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
+<!--
+	Astral by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <title>Hangman swing by tcarrio</title>
-  </head>
+	<head>
+		<title>Astral by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+	</head>
+	<body>
 
-  <body>
-    <div id="container">
-      <div class="inner">
+		<!-- Wrapper-->
+			<div id="wrapper">
 
-        <header>
-          <h1>Hangman swing</h1>
-          <h2>Preliminary Hangman Java application for CSE-337 using Java Swing</h2>
-        </header>
+				<!-- Nav -->
+					<nav id="nav">
+						<a href="#me" class="icon fa-asterisk active"><span>Home</span></a>
+						<a href="#work" class="icon fa-code"><span>About</span></a>
+						<a href="#contact" class="icon fa-envelope-o"><span>Contact</span></a>
+						<a href="http://github.com/tcarrio" class="icon fa-github"><span>Github</span></a>
+					</nav>
 
-        <section id="downloads" class="clearfix">
-          <a href="https://github.com/tcarrio/hangman_swing/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
-          <a href="https://github.com/tcarrio/hangman_swing/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
-          <a href="https://github.com/tcarrio/hangman_swing" id="view-on-github" class="button"><span>View on GitHub</span></a>
-        </section>
+				<!-- Main -->
+					<div id="main">
 
-        <hr>
+						<!-- Me -->
+							<article id="me" class="panel">
+								<header>
+									<h1>hangman_swing::</h1>
+									<p>a java swing application to play hangman</p>
+								</header>
+								<a href="#work" class="jumplink pic">
+									<span class="arrow icon fa-chevron-right"><span>See my work</span></span>
+									<img src="images/me.jpg" alt="" />
+								</a>
+							</article>
 
-        <section id="main_content">
-          <h1>
-<a id="hangman_swing" class="anchor" href="#hangman_swing" aria-hidden="true"><span class="octicon octicon-link"></span></a>hangman_swing</h1>
+						<!-- Work -->
+							<article id="work" class="panel">
+								<header>
+									<h2>about::</h2>
+								</header>
+								<p>
+									<b>The Project</b>: I've developed a habit maintaining all of my code through Github. It allows me to continue utilizing the <b>git version control software</b> as well as practice industry standards for code reviewing / merging / etc. This assignment has not been completed yet, however the git history alone tracks back and will abstain me of any potential cheating accusations should any arise. This work has been completed utilizing the integrated <b>Javadocs</b>, the <b>Oracle API for Java 7/8</b>, and various <b>StackOverflow</b> articles for reference. 
+								</p>
+								<header>
+									<h2>features::</h2>
+								</header>
+								<p>
+									<b>Autonomy</b>: Includes a list of over <b>500</b> words of length at least 8 characters and up to 16. Hangman will function without internet connectivity with a smaller list of random words to choose from.</br></br>
+									<b>Web Connectivity</b>: If network connection is detected, this will interface with a <b>REST</b>ful server to call for a random word. <b>SetGetGo</b> has a webpage setup that returns a single word upon a GET request that would be useful for this. Allows a specified length (len=[3-20]) as well.</br></br>
+									<b>Working Menu</b>: The JMenu has been populated for the application, showing user actions to <b>Quit</b> as well as show more information <b>About</b> the application. This is easy to expand on for further functionality. 
+								</p>
+								<header>
+									<h2>design::</h2>
+								</header>
+								<p>
+									<b>Programming Style</b>: I followed a loose design scheme, aiming mostly to display my understanding of Object-Oriented Programming through the creation of classes utilizing inheritance and encapsulation. There was a potential for some interesting polymorphic classes to use as a Thread handler, however an easier alternative disposing Threads with the automatic garbage collection provided much cleaner code.
+								</p>  
+								<!-- <section>
+									<div class="row">
+										<div class="4u 12u$(mobile)">
+											<a href="#" class="image fit"><img src="images/pic01.jpg" alt=""></a>
+										</div>
+										<div class="4u 12u$(mobile)">
+											<a href="#" class="image fit"><img src="images/pic02.jpg" alt=""></a>
+										</div>
+										<div class="4u$ 12u$(mobile)">
+											<a href="#" class="image fit"><img src="images/pic03.jpg" alt=""></a>
+										</div>
+										<div class="4u 12u$(mobile)">
+											<a href="#" class="image fit"><img src="images/pic04.jpg" alt=""></a>
+										</div>
+										<div class="4u 12u$(mobile)">
+											<a href="#" class="image fit"><img src="images/pic05.jpg" alt=""></a>
+										</div>
+										<div class="4u$ 12u$(mobile)">
+											<a href="#" class="image fit"><img src="images/pic06.jpg" alt=""></a>
+										</div>
+										<div class="4u 12u$(mobile)">
+											<a href="#" class="image fit"><img src="images/pic07.jpg" alt=""></a>
+										</div>
+										<div class="4u 12u$(mobile)">
+											<a href="#" class="image fit"><img src="images/pic08.jpg" alt=""></a>
+										</div>
+										<div class="4u$ 12u$(mobile)">
+											<a href="#" class="image fit"><img src="images/pic09.jpg" alt=""></a>
+										</div>
+										<div class="4u 12u$(mobile)">
+											<a href="#" class="image fit"><img src="images/pic10.jpg" alt=""></a>
+										</div>
+										<div class="4u 12u$(mobile)">
+											<a href="#" class="image fit"><img src="images/pic11.jpg" alt=""></a>
+										</div>
+										<div class="4u$ 12u$(mobile)">
+											<a href="#" class="image fit"><img src="images/pic12.jpg" alt=""></a>
+										</div>
+									</div>
+								</section> -->
+							</article>
 
-<p>Hangman Java application for CSE-337 using Java Swing</p>
+						<!-- Contact -->
+							<article id="contact" class="panel">
+								<header>
+									<h2>Contact Me</h2>
+								</header>
+								<form action="#" method="post">
+									<div>
+										<div class="row">
+											<div class="6u 12u$(mobile)">
+												<input type="text" name="name" placeholder="Name" />
+											</div>
+											<div class="6u$ 12u$(mobile)">
+												<input type="text" name="email" placeholder="Email" />
+											</div>
+											<div class="12u$">
+												<input type="text" name="subject" placeholder="Subject" />
+											</div>
+											<div class="12u$">
+												<textarea name="message" placeholder="Message" rows="8"></textarea>
+											</div>
+											<div class="12u$">
+												<input type="submit" value="Send Message" />
+											</div>
+										</div>
+									</div>
+								</form>
+							</article>
 
-<h1>
-<a id="about" class="anchor" href="#about" aria-hidden="true"><span class="octicon octicon-link"></span></a>about</h1>
+					</div>
 
-<p>I've developed a habit maintaining all of my code through Github. It allows me to continue utilizing the <em>git</em> version control software as well as practice industry standards for code reviewing / merging / etc. This assignment has not been completed yet, however the git history alone tracks back and will abstain me of any potential cheating accusations should any arise. This work has been completed utilizing the integrated Javadocs, the Oracle API for Java 7/8, and various StackOverflow articles. </p>
+				<!-- Footer -->
+					<div id="footer">
+						<ul class="copyright">
+							<li>&copy; Thomas Carrio.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+						</ul>
+					</div>
 
-<h1>
-<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>features</h1>
+			</div>
 
-<p><b>Autonomy</b>: Includes a list of over <strong>500 words</strong> of length at least 8 characters up to 16. Hangman will function without internet connectivity with a smaller list of random words to choose from.</p>
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/skel-viewport.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
 
-<p><b>Web Connectivity</b>: If network connection is detected, this will implement a RESTful interface to call for a random word. <a href="http://randomword.setgetgo.com/">SetGetGo</a> has a webpage setup that returns a single word upon a GET request that would be useful for this. Allows a specified length (len=[3-20]) as well. </p>
-        </section>
-
-        <footer>
-          Hangman swing is maintained by <a href="https://github.com/tcarrio">tcarrio</a><br>
-          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
-        </footer>
-
-        
-      </div>
-    </div>
-  </body>
+	</body>
 </html>

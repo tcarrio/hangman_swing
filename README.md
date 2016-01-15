@@ -1,10 +1,40 @@
-# hangman_swing
-Hangman Java application for CSE-337 using Java Swing
+# hangman_webpage
+Landing page for the hangman_swing repository
 
-# about
-I've developed a habit maintaining all of my code through Github. It allows me to continue utilizing the *git* version control software as well as practice industry standards for code reviewing / merging / etc. This assignment has not been completed yet, however the git history alone tracks back and will abstain me of any potential cheating accusations should any arise. This work has been completed utilizing the integrated Javadocs, the Oracle API for Java 7/8, and various StackOverflow articles. 
+# webpage
+Astral by HTML5 UP
+html5up.net | @n33co
+Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 
-# features
-<b>Autonomy</b>: Includes a list of over **500 words** of length at least 8 characters up to 16. Hangman will function without internet connectivity with a smaller list of random words to choose from.
 
-<b>Web Connectivity</b>: If network connection is detected, this will implement a RESTful interface to call for a random word. <a href="http://randomword.setgetgo.com/">SetGetGo</a> has a webpage setup that returns a single word upon a GET request that would be useful for this. Allows a specified length (len=[3-20]) as well. 
+First of its kind on H5U! Astral features a flat, minimalistic design, a fully animated
+interface (with noscript fallbacks), and styling for all basic page elements (including
+blockquotes, tables and lists). Enjoy!
+
+Demo images* courtesy of Unsplash, a radtastic collection of CC0 (public domain) images
+you can use for pretty much whatever.
+
+(* = Not included)
+
+Feedback, bug reports, and comments are not only welcome, but strongly encouraged :)
+
+AJ
+n33.co @n33co dribbble.com/n33
+
+PS: Not sure how to get that contact form working? Give formspree.io a try (it's awesome).
+
+
+Credits:
+
+	Demo Images:
+		Unsplash (unsplash.com)
+
+	Icons:
+		Font Awesome (fortawesome.github.com/Font-Awesome)
+
+	Other:
+		jQuery (jquery.com)
+		html5shiv.js (@afarkas @jdalton @jon_neal @rem)v
+		background-size polyfill (github.com/louisremi)
+		Repond.js (j.mp/respondjs)
+		Skel (skel.io)
