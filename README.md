@@ -1,6 +1,8 @@
 # hangman_swing
 Hangman Java application for CSE-337 using Java Swing
 
+The website for this project can be found under my <a href="http://github.com/tcarrio">GitHub</a> or at its <a href="http://hangman.carrio.me">webpage</a>
+
 # about
 I've developed a habit maintaining all of my code through Github. It allows me to continue utilizing the *git* version control software as well as practice industry standards for code reviewing / merging / etc. This assignment has not been completed yet, however the git history alone tracks back and will abstain me of any potential cheating accusations should any arise. This work has been completed utilizing the integrated Javadocs, the Oracle API for Java 7/8, and various StackOverflow articles. 
 
