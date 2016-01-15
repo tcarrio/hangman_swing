@@ -1,3 +1,6 @@
+// This class was never utilized in the final product, however I'm keeping the
+// work available in case I want to toy with this later.
+
 package me.carrio.hangman;
 
 import java.io.FileReader;

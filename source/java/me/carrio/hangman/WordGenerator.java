@@ -14,12 +14,23 @@ public class WordGenerator {
 	private final String fname = 
 		"../data/word_list.ini";
 
+	/**
+	 * Constructor to intialize local word lists
+	 */
 	public WordGenerator(){
 		webSearch = new OnlineWordSearch();
 		localWords = new ArrayList<>();
 		getLocalWords();
 	}
 
+	/**
+	 * Returns a new word as a String
+	 *
+	 * Checks internet connectivity and uses the server if available,
+	 * otherwise defaults to the local word cache
+	 *
+	 * @return 	String 	the next available word
+	 */
 	public String newWord(){
 		if(webSearch.checkConnection()){
 			randomWord = webSearch.newWord();
@@ -29,11 +40,22 @@ public class WordGenerator {
 		}
 	}
 
+	/** 
+	 * Randomly returns a word for the game
+	 *
+	 * Uses a pseudorandom number generator to return whichever word
+	 * is stored in the localWords ArrayList at the index created 
+	 *
+	 * @return 	String 	the randomly selected local word
+	 */
 	private String randomLocalWord(){
 		Random r = new Random();
 		return localWords.get(r.nextInt(localWords.size()));
 	}
 
+	/**
+	 * Reads the word file to load all the words into memory
+	 */
 	private void getLocalWords(){
 		try{
 			BufferedReader br = new BufferedReader(

@@ -33,11 +33,18 @@ public class TimedLabel extends JLabel{
 	private class TimeThread extends Thread{
 		private JLabel j;
 		private int t;
+
+		/**
+		 * Constructor to handle the JLabel portion of TimeLabel
+		 */
 		public TimeThread(JLabel j){
 			super();
 			this.j=j;
 		}
 
+		/**
+		 * Overridden method to manually timeout text in the JLabel
+		 */
 		public void run(){
 			try{
 				Thread.sleep(2500);

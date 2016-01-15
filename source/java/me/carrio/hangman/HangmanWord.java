@@ -46,7 +46,8 @@ public class HangmanWord extends JLabel{
     /**
      * Resets variables to end the current game session
      *
-     * 
+     * Resets the values related to running the game. This does not manually change
+     * the display, but alters encapsulated values relevant to the game logic. 
      */
     public void endGame(){
         playing=false;
@@ -55,7 +56,12 @@ public class HangmanWord extends JLabel{
     }
 
     /**
+     * Generates a 15 character length X-filled String
      *
+     * Creates a String to use for the display of the Hangman word at the start of
+     * the game to be manipulated as the game goes on.
+     *
+     * @return  String  the String containing only X's of length 15
      */
     private String generateDisplayWord( ){
     	char[] tempArr = new char[15];
@@ -64,7 +70,14 @@ public class HangmanWord extends JLabel{
     }
 
     /**
+     * Generates an X-filled String of length the same as the provided word
      *
+     * Creates a String to use in place of the provided word, likely the secret
+     * word that is to be used for this session of Hangman. This will be revealed
+     * to the user as they make guesses.
+     *
+     * @param   String  the String to use to generated an equal-length X-filled String
+     * @return  String  the String containing only X's whose length equals that of word
      */
     private String generateDisplayWord(String word){
     	char[] tempArr = new char[word.length()];
@@ -108,18 +121,38 @@ public class HangmanWord extends JLabel{
         return code;
     }
 
+    /**
+     * Retrieve local int totalTries
+     *
+     * @return  int     total allowed tries
+     */
     public int getTotalTries(){
         return totalTries;
     }
 
+    /**
+     * Retrieve local int correct
+     *
+     * @return  int     number of corrected letters
+     */
     public int getCorrect(){
         return corrected;
     }
 
+    /**
+     * Retrieve local int wrong
+     *
+     * @return  int     number of wrong guesses this game
+     */
     public int getWrong(){
         return wrong;
     }
 
+    /**
+     * Provides a code for the game status
+     *
+     * @return  int     code representing the status of the game
+     */
     public int isGameOver(){
         if(playing)
             return (wrong!=totalTries)
@@ -129,6 +162,14 @@ public class HangmanWord extends JLabel{
             return -2;
     }
 
+    /**
+     * Generates the String filled with number of tries for GUI display
+     *
+     * Retrieves the number of tries made by the user and displays it 
+     * on the application as the game progresses. 
+     *
+     * @return  String  a String containing the number of tries the users had
+     */
     public String gameStatusString(){
         return String.format("Tries:%2d",wrong);
     }

@@ -16,11 +16,17 @@ public class OnlineWordSearch {
     private BufferedReader br;
     private ArrayList<String> wordCollection;
 
+    /**
+     * Creates an ArrayList and fills it with LIST_ADD_LIMIT words
+     */
     public OnlineWordSearch(){
     	wordCollection = new ArrayList<>(LIST_ADD_LIMIT);
     	addToList();
     }
 
+    /**
+     * If internet connection available, add another set of words to list
+     */
     private void addToList(){
     	if(checkConnection()){
     		for(int i=0;i<LIST_ADD_LIMIT;i++){
@@ -29,21 +35,48 @@ public class OnlineWordSearch {
     	}
     }
 
+    /**
+     * Generates a random length int between 7 and 15. 
+     *
+     * @return 	int 	a random length suitable for Hangman
+     */
     private int generateLength(){
     	Random r = new Random();
-    	return r.nextInt(8)+7;
+    	return r.nextInt(8)+8;
     }
 
+    /**
+     * Returns the next word for the game
+     *
+     * Iterates to the next index of the local list, if out of words,
+     * calls addToList to check for connection and add more words. 
+     */
     public String newWord(){
     	if(index>=wordCollection.size())
     		addToList();
     	return wordCollection.get(index++);
     }
 
+    /**
+     * Request and returns a String from the server of random length [7-15]
+     *
+     * Use generateLength and randomize(int length) to request and return a 
+     * String from the server of a random length. 
+     * @return 	String 	the random String returned from the server
+     */
 	private String randomize(){
 		return randomize(generateLength());
 	}
 
+	/**
+	 * Requests a word from the server of length 'length'
+	 *
+	 * Uses the user provided length, given it is of suitable size, to retrieve
+	 * a word from the server.
+	 *
+	 * @return 	String 	the random String returned from the server
+	 * @param 	int 	the length to be used to request the word [7-15]
+	 */
 	private String randomize(int length){
 		if(length > MAX_LETTERS || length < 6)
 			length = generateLength();
@@ -79,7 +112,19 @@ public class OnlineWordSearch {
         return "";
 	}
 
+	/**
+	 *	Requests a webpage to determine if internet access is available
+	 *
+	 * @return 	boolean 	the status of internet connectivity
+	 */
 	public boolean checkConnection(){
-		return true;
+		try{
+			URL test = new URL("http://www.google.com");
+			InputStream isTest = url.openStream();
+			return true;
+		} catch(Exception e){
+			return false;
+		}
+		return false;
 	}
 }
